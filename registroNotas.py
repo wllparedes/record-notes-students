@@ -11,7 +11,7 @@ cursos = ['Matematica', 'Comunicación', 'Fisica', 'Ciencias Sociales', 'Ciencia
 def ingreso():
     while(True):
         cursosAprobados = []
-        cursosDesaprobasos = []
+        cursosDesaprobados = []
         notasAlumnox = []
         nombre = input('Ingrese nombre/apellidos del alumno: (0 para salir): ')
         if (nombre == '0'):
@@ -29,7 +29,7 @@ def ingreso():
                             cursosAprobados.append(c)
                         elif (nota >= 0 and nota <= 12):
                             c_cur_des += 1
-                            cursosDesaprobasos.append(c)
+                            cursosDesaprobados.append(c)
                         notasAlumnox.append(nota)
                         print('✓')
                         break;
@@ -47,7 +47,7 @@ def ingreso():
             case _: tabla.add_row([nombre, c_cur_apro, c_cur_des, '(x) REPITENCIA'])
 
         # Añade los datos muy generales a un diccionario donde la clave es el nombre del alumno
-        dictNam_apro_desa[nombre] = cursosAprobados, cursosDesaprobasos, notasAlumnox
+        dictNam_apro_desa[nombre] = cursosAprobados, cursosDesaprobados, notasAlumnox
 
 
 # Función que realiza el promedio de los alumnos ingresado tomando en cuenta las notas ingresadas anteriormente
@@ -66,7 +66,7 @@ def promedio_alumn(dicc):
 
 # Función que escribe la tabla hecha en un archivo .txt
 def imprimir(table):
-    archivo = open('tablaAlumnos.txt', 'a')
+    archivo = open('tablaAlumnos.txt', 'a', encoding='utf-8')
     archivo.write(str(f'\n{table}'))
     archivo.close()
     return '\n(✓) Su tabla ha sido impresa en el archivo .txt con exito\n'

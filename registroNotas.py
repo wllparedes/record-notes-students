@@ -71,6 +71,12 @@ def imprimir(table):
     archivo.close()
     return '\n(✓) Su tabla ha sido impresa en el archivo .txt con exito\n'
 
+def limpiar():
+    archivo = open('tablaAlumnos.txt', 'w', encoding='utf-8')
+    archivo.truncate()
+    archivo.close()
+    return '\n(✓) Su archivo .txt ha sido limpiado con exito\n'
+
 
 # Main del programa
 def main_n():
@@ -82,6 +88,7 @@ def main_n():
 3. Ver Diccionario de alumnos
 4. Ver Promedio General de alumnos y su condición
 5. Imprimir la tabla 
+6. Limpiar archivo .txt
 0. Salir''')
 # Cuando queramos ver el .txt es mejor verlo desde archivos q desde el IDE
             opc = int(input('\n- Ingrese su opción: '))
@@ -94,10 +101,9 @@ def main_n():
                 case 3: print(dictNam_apro_desa)
                 case 4: promedio_alumn(dictNam_apro_desa)
                 case 5: print(imprimir(tabla))
+                case 6: print(limpiar())
                 case _: print('\n(!) Opción no valida\n')
         except ValueError:
             print('\n(!) Opción incorrecta\n')
 
-
 main_n()
-

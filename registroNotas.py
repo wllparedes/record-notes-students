@@ -10,7 +10,6 @@ dictNam_apro_desa = {}
 cursos = ['Matematica', 'Comunicación', 'Fisica', 'Ciencias Sociales', 'Ciencia']
 
 # Función que permite en ingreso del alumno, como tambien de preguntar las notas en respectivos cursos
-
 def ingreso():
   while(True):
     cursosAprobados = []
@@ -18,7 +17,7 @@ def ingreso():
     notasAlumnox = []
     nombre = input(f'{Fore.LIGHTWHITE_EX}Ingrese nombre/apellidos del alumno: (0 para salir): ')
     if (nombre == '0'):
-      break
+      return f'\n{Fore.YELLOW}Salió del programa 1\n'
     c_cur_des = 0
     c_cur_apro = 0
     print(f'\n\t.: Ingrese las notas del alumno: {Fore.LIGHTCYAN_EX}{nombre}{Fore.LIGHTWHITE_EX} :.\n')
@@ -41,8 +40,6 @@ def ingreso():
         except ValueError:
           print(f'{Fore.RED}(!) Ha digitado incorrectamente, vuelva a internarlo')
 
-    print(f'{Fore.GREEN}(✓) Notas almacenadas correctamente\n')
-
     # Añade los datos: nombre,ca, cd y condición a la tabla creada anteriormente
     match (c_cur_des):
       case 0: tabla.add_row([nombre, c_cur_apro, c_cur_des, '(✓) APROBADO'])
@@ -51,28 +48,46 @@ def ingreso():
 
     # Añade los datos muy generales a un diccionario donde la clave es el nombre del alumno
     dictNam_apro_desa[nombre] = cursosAprobados, cursosDesaprobados, notasAlumnox
+    # Se retorna el mensaje de todo correcto
+    print(f'{Fore.LIGHTGREEN_EX}(✓) Notas del alumno/a {Fore.LIGHTCYAN_EX}<{nombre}>{Fore.LIGHTGREEN_EX} agregados correctamente\n')
 
 # Función que realiza el promedio de los alumnos ingresado tomando en cuenta las notas ingresadas anteriormente
 def promedio_alumn(dicc):
-  print('\n')
-  for v in dicc:
-    sum_nots = 0
-    listaAlumnNot = dicc[v][2]
-    for n in listaAlumnNot:
-      sum_nots += n
-    promedioFinal = round(sum_nots / len(listaAlumnNot),2)
-    print(f'''(°) Información del alumno: {v}
-(°) Notas: {listaAlumnNot} | Promedio Final: {promedioFinal}''')
-    print('\n')
+  if (len(dicc) == 0):
+    return f'\n{Fore.RED}(!) Advertencia: Aún no se han ingresado alumnos a la tabla'
+  else:
+    print(f'\n\t\t{Fore.MAGENTA}.: Información General de Promedio de Alumnos :.\n')
+    for v in dicc:
+      sum_nots = 0
+      listaAlumnNot = dicc[v][2]
+      stringNot = []
+      # stringNot = ', '.join([str(nu) for nu in listaAlumnNot])
+      for n in listaAlumnNot:
+        sum_nots += n
+        stringNot.append(str(n))
+      promedioFinal = round(sum_nots / len(listaAlumnNot), 2)
+      print(f'''{Fore.LIGHTWHITE_EX}(°) Información del alumno: {Fore.LIGHTCYAN_EX}{v}{Fore.LIGHTWHITE_EX}
+(°) Notas: {', '.join(stringNot)} | Promedio Final: {promedioFinal}\n''')
+  return f'\n{Fore.GREEN}(✓) Impresa promedios de los alumnos\n'
 
+# Función para imprimir la tabla en la terminal
+def terPrintTable(table, dicc):
+  if (len(dicc) == 0):
+    return f'\n{Fore.RED}(!) Advertencia: Aún no se han ingresado alumnos a la tabla'
+  else:
+    return f'\n\t\t{Fore.MAGENTA}.: Tabla de Alumnos Ingresados :.{Fore.LIGHTWHITE_EX}\n\n{table}'
 
 # Función que escribe la tabla hecha en un archivo .txt
-def imprimir(table):
-  archivo = open('tablaAlumnos.txt', 'a+', encoding='utf-8')
-  archivo.write(str(f'\n{table}'))
-  archivo.close()
-  return f'\n{Fore.GREEN}(✓) Su tabla ha sido impresa en el archivo .txt con exito\n'
+def imprimir(table, dicc):
+  if (len(dicc) == 0):
+    return f'\n{Fore.RED}(!) Advertencia: Aún no se han ingresado alumnos a la tabla'
+  else:
+    archivo = open('tablaAlumnos.txt', 'a+', encoding='utf-8')
+    archivo.write(str(f'\n{table}'))
+    archivo.close()
+    return f'\n{Fore.GREEN}(✓) Su tabla ha sido impresa en el archivo .txt con exito\n'
 
+# Función que limpia el archivo .txt
 def limpiar():
   archivo = open('tablaAlumnos.txt', 'r+', encoding='utf-8')
   archivo.truncate()
@@ -83,7 +98,7 @@ def limpiar():
 def main_n():
   while (True):
     try:
-      print(f'''\n\t{Fore.LIGHTMAGENTA_EX}.: REGISTRO DE NOTAS :.
+        print(f'''\n\t{Fore.LIGHTMAGENTA_EX}.: REGISTRO DE NOTAS :.
 \n{Fore.LIGHTWHITE_EX}1. Ingresar notas de alumnos
 2. Ver tabla de alumnos
 3. Ver Diccionario de alumnos
@@ -91,19 +106,19 @@ def main_n():
 5. Imprimir la tabla 
 6. Limpiar archivo .txt
 0. Salir''')
-      # Cuando queramos ver el .txt es mejor verlo desde archivos q desde el IDE
-      opc = int(input('\n- Ingrese su opción: '))
-      match (opc):
-        case 0:
-          print(f'{Fore.YELLOW}\n(!!) Saliendo del programa, tenga un buen día :){Fore.YELLOW}{Fore.LIGHTWHITE_EX}')
-          break
-        case 1: ingreso()
-        case 2: print(tabla)
-        case 3: print(dictNam_apro_desa)
-        case 4: promedio_alumn(dictNam_apro_desa)
-        case 5: print(imprimir(tabla))
-        case 6: print(limpiar())
-        case _: print(f'{Fore.RED}\n(!) Opción no valida\n')
+        # Cuando queramos ver el .txt es mejor verlo desde archivos q desde el IDE
+        opc = int(input('\n- Ingrese su opción: '))
+        match (opc):
+          case 0: 
+            print(f'{Fore.YELLOW}\n(!!) Saliendo del programa, tenga un buen día :){Fore.YELLOW}{Fore.LIGHTWHITE_EX}')
+            break
+          case 1: print(ingreso())
+          case 2: print(terPrintTable(tabla, dictNam_apro_desa))
+          case 3: print(dictNam_apro_desa)
+          case 4: print(promedio_alumn(dictNam_apro_desa))
+          case 5: print(imprimir(tabla, dictNam_apro_desa))
+          case 6: print(limpiar())
+          case _: print(f'{Fore.RED}\n(!) Opción no valida\n')
     except ValueError:
       print(f'\n{Fore.RED}(!) Opción incorrecta\n')
 

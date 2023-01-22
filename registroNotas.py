@@ -51,6 +51,33 @@ def ingreso():
     # Se retorna el mensaje de todo correcto
     print(f'{Fore.LIGHTGREEN_EX}(✓) Notas del alumno/a {Fore.LIGHTCYAN_EX}<{nombre}>{Fore.LIGHTGREEN_EX} agregados correctamente\n')
 
+# Función para editar los nombres del alumnos
+def editar_nombres(tabla):
+  while (True):
+    try:
+      nuevo_nombre = input('Ingrese un Nombre y Apellido nuevo: ').strip()
+      if (nuevo_nombre != ''):
+        while (True):
+          try:
+              indice_edit = (int(input('Digite la fila del nombre a editar: ')) - 1)
+              if(0 <= indice_edit <= tabla.rowcount):
+                valores = tabla.rows[indice_edit]
+                tabla.add_row([nuevo_nombre, valores[1], valores[2], valores[3]])
+                tabla.del_row(indice_edit)
+                return f'\nEdición satisfactoriamente!'
+              else: 
+                print('Digite una fila correcta a editar')
+                continue
+          except ValueError:
+            print('(!) Error: Digitación incorrecta')
+          # except IndexError:
+          #   print('(!) Ingrese un número de fila existente')
+      else: 
+        print('(!) Digite un nombre correctamente')
+        continue
+    except:
+      print('(!) Error: Digitación incorrecta')
+
 # Función que realiza el promedio de los alumnos ingresado tomando en cuenta las notas ingresadas anteriormente
 def promedio_alumn(dicc):
   if (len(dicc) == 0):
@@ -105,6 +132,7 @@ def main_n():
 4. Ver Promedio General de alumnos y su condición
 5. Imprimir la tabla 
 6. Limpiar archivo .txt
+7. Editar Nombre de Alumno
 0. Salir''')
         # Cuando queramos ver el .txt es mejor verlo desde archivos q desde el IDE
         opc = int(input('\n- Ingrese su opción: '))
@@ -118,6 +146,7 @@ def main_n():
           case 4: print(promedio_alumn(dictNam_apro_desa))
           case 5: print(imprimir(tabla, dictNam_apro_desa))
           case 6: print(limpiar())
+          case 7: print(editar_nombres(tabla))
           case _: print(f'{Fore.RED}\n(!) Opción no valida\n')
     except ValueError:
       print(f'\n{Fore.RED}(!) Opción incorrecta\n')
